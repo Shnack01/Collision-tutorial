@@ -24,9 +24,9 @@ namespace CollisionExample
 
         private bool flipped;
 
-        private BoundingCircle bounds = new BoundingCircle(new Vector2(200,200), 16);
+        private BoundingRectangle bounds = new BoundingRectangle(new Vector2(200-16,200-16), 32, 32);
 
-        public BoundingCircle Bounds => bounds;
+        public BoundingRectangle Bounds => bounds;
         /// <summary>
         /// The color to blend with the ghost
         /// </summary>
@@ -69,7 +69,8 @@ namespace CollisionExample
                 flipped = false;
             }
             //update the bounds
-            bounds.Center = position;
+            bounds.X = position.X - 16;
+            bounds.Y = position.Y - 16;
         }
 
         /// <summary>
@@ -80,7 +81,7 @@ namespace CollisionExample
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             SpriteEffects spriteEffects = (flipped) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.Draw(texture, position, null, Color, 0, new Vector2(0, 0), 0.25f, spriteEffects, 0);
+            spriteBatch.Draw(texture, position, null, Color, 0, new Vector2(64, 64), 0.25f, spriteEffects, 0);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Reflection.Metadata.Ecma335;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -71,17 +72,15 @@ namespace CollisionExample
 
             // TODO: Add your update logic here
             slimeGhost.Update(gameTime);
-
+            slimeGhost.Color = Color.White;
             //Detect and process collisions
             foreach(var coin in coins)
             {
-                if(coin.Bounds.CollidesWith(slimeGhost.Bounds))
+                if(!coin.Collected &&  coin.Bounds.CollidesWith(slimeGhost.Bounds))
                 {
-                    slimeGhost.Color = Color.Orange;
-                }
-                else
-                {
-                    slimeGhost.Color = Color.White;
+                    slimeGhost.Color = Color.Red;
+                    coin.Collected = true;
+                    coinsLeft--;
                 }
             }
             base.Update(gameTime);

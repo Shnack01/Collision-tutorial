@@ -29,6 +29,8 @@ namespace CollisionExample
         /// </summary>
         public BoundingCircle Bounds => bounds;
 
+        public bool Collected {get; set;} = false;
+
 
         /// <summary>
         /// Creates a new coin sprite
@@ -37,7 +39,7 @@ namespace CollisionExample
         public CoinSprite(Vector2 position)
         {
             this.position = position;
-            this.bounds = new BoundingCircle(position - new Vector2(8,8), 8);
+            this.bounds = new BoundingCircle(position + new Vector2(8,8) , 8);
         }
 
         /// <summary>
@@ -56,6 +58,7 @@ namespace CollisionExample
         /// <param name="spriteBatch">The spritebatch to render with</param>
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            if(Collected) return;
             animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
             if(animationTimer > ANIMATION_SPEED)
