@@ -17,11 +17,22 @@ namespace CollisionExample
 
         private double animationTimer;
 
-        private int animationFrame;
-
+        private int animationFrame; 
         private Vector2 position;
+        public Vector2 Position
+        {
+            get => position;
+            set
+            {
+                position = value;
+                bounds.Center = position + new Vector2(8, 8);
+                sightBounds.Center = position + new Vector2(8, 8);
+            }
+        }
 
         private Texture2D texture;
+        private BoundingCircle sightBounds;
+        public BoundingCircle SightBounds => sightBounds;
 
         private BoundingCircle bounds;
         /// <summary>
@@ -38,8 +49,9 @@ namespace CollisionExample
         /// <param name="position">The position of the sprite in the game</param>
         public CoinSprite(Vector2 position)
         {
-            this.position = position;
-            this.bounds = new BoundingCircle(position + new Vector2(8,8) , 8);
+            this.bounds = new BoundingCircle(Position + new Vector2(8,8) , 8);
+            this.sightBounds = new BoundingCircle(Position + new Vector2(8,8), 8 * 5);
+            this.Position = position;
         }
 
         /// <summary>
@@ -69,7 +81,7 @@ namespace CollisionExample
             }
 
             var source = new Rectangle(animationFrame * 16, 0, 16, 16);
-            spriteBatch.Draw(texture, position, source, Color.White);
+            spriteBatch.Draw(texture, Position, source, Color.White);
         }
     }
 }

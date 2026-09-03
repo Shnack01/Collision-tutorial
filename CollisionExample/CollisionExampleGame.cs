@@ -82,6 +82,11 @@ namespace CollisionExample
                     coin.Collected = true;
                     coinsLeft--;
                 }
+                if (coin.SightBounds.CollidesWith(slimeGhost.Bounds))
+                {
+                    slimeGhost.Color = Color.Blue;
+                    coin.Position += (slimeGhost.Posision - coin.Position)/50;
+                }
             }
             base.Update(gameTime);
         }

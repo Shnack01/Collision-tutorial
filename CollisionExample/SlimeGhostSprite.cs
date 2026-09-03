@@ -21,6 +21,7 @@ namespace CollisionExample
         private Texture2D texture;
 
         private Vector2 position = new Vector2(200, 200);
+        public Vector2 Posision => position;
 
         private bool flipped;
 
