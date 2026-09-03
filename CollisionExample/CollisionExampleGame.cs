@@ -59,7 +59,7 @@ namespace CollisionExample
             };
             coinsLeft = coins.Length;
             slimeGhost = new SlimeGhostSprite();
-            flagSprite = new FlagSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height));
+            flagSprite = new FlagSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width - 100, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height - 100));
 
             base.Initialize();
         }
@@ -108,12 +108,14 @@ namespace CollisionExample
                     slimeGhost.Color = Color.Blue;
                     coin.Position += (slimeGhost.Posision - coin.Position)/50;
                 }
-                if(flagSprite.Bounds.CollidesWith(slimeGhost.Bounds))
-                {
-                    slimeGhost.Color = Color.Yellow;
-                }
-
+                
             }
+            if(flagSprite.Bounds.CollidesWith(slimeGhost.Bounds))
+            {
+                slimeGhost.Color = Color.Yellow;
+                foreach(var coin in coins) coin.Collected = true;
+            }
+
             base.Update(gameTime);
         }
 
