@@ -13,6 +13,7 @@ namespace CollisionExample
         private CoinSprite[] coins;
         private SlimeGhostSprite slimeGhost;
         private SpriteFont spriteFont;
+        private FlagSprite flagSprite;
         private int coinsLeft;
 
         /// <summary>
@@ -40,10 +41,25 @@ namespace CollisionExample
                 new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
                 new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
                 new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
+                new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height)),
                 new CoinSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height))
             };
             coinsLeft = coins.Length;
             slimeGhost = new SlimeGhostSprite();
+            flagSprite = new FlagSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height));
 
             base.Initialize();
         }
@@ -58,6 +74,7 @@ namespace CollisionExample
             // TODO: use this.Content to load your game content here
             foreach (var coin in coins) coin.LoadContent(Content);
             slimeGhost.LoadContent(Content);
+            flagSprite.LoadContent(Content);
             spriteFont = Content.Load<SpriteFont>("arial");
         }
 
@@ -80,13 +97,22 @@ namespace CollisionExample
                 {
                     slimeGhost.Color = Color.Red;
                     coin.Collected = true;
-                    coinsLeft--;
+                    slimeGhost.Health--;
+                    if(slimeGhost.Health == 0)
+                    {
+                        slimeGhost.Explode();
+                    }
                 }
                 if (coin.SightBounds.CollidesWith(slimeGhost.Bounds))
                 {
                     slimeGhost.Color = Color.Blue;
                     coin.Position += (slimeGhost.Posision - coin.Position)/50;
                 }
+                if(flagSprite.Bounds.CollidesWith(slimeGhost.Bounds))
+                {
+                    slimeGhost.Color = Color.Yellow;
+                }
+
             }
             base.Update(gameTime);
         }
@@ -103,7 +129,8 @@ namespace CollisionExample
             spriteBatch.Begin();
             foreach (var coin in coins) coin.Draw(gameTime, spriteBatch);
             slimeGhost.Draw(gameTime, spriteBatch);
-            spriteBatch.DrawString(spriteFont, $"Coins left: {coinsLeft}", new Vector2(2,2), Color.Gold);
+            flagSprite.Draw(gameTime, spriteBatch);
+            spriteBatch.DrawString(spriteFont, $"Ship Health: {slimeGhost.Health}", new Vector2(2,2), Color.Gold);
             spriteBatch.End();
 
             base.Draw(gameTime);

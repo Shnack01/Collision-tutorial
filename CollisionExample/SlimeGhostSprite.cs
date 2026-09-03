@@ -14,7 +14,11 @@ namespace CollisionExample
     /// </summary>
     public class SlimeGhostSprite
     {
+
         private GamePadState gamePadState;
+
+        public int Health {get; set;} = 3;
+        private bool alive = true;
 
         private KeyboardState keyboardState;
 
@@ -81,8 +85,14 @@ namespace CollisionExample
         /// <param name="spriteBatch">The spritebatch to render with</param>
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            if(!alive) return;
             SpriteEffects spriteEffects = (flipped) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(texture, position, null, Color, 0, new Vector2(64, 64), 0.25f, spriteEffects, 0);
+        }
+
+        public void Explode()
+        {
+            alive = false;
         }
     }
 }
